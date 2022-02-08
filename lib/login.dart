@@ -17,7 +17,7 @@ class _LoginState extends State<Login> {
       body: Center(
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color(0Xffa4c4b5),
             borderRadius: BorderRadius.circular(5)
           ),
 
@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Login",style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),),
+                    Text("Digital Signage Login",style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),textAlign: TextAlign.center,),
                   ],
                 ),
                 SizedBox(height: 50,),
@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
 
                 ElevatedButton(onPressed: (){},
                     style: ElevatedButton.styleFrom(
-                        primary: isProgress ? Colors.blue.shade200 : Colors.indigo
+                        primary: isProgress ? Color(0Xff696969).withOpacity(0.5) : Color(0Xff696969)
                     ),
                     child: Container(
                         height: 38,
