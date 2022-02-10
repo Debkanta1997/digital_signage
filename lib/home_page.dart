@@ -1,5 +1,10 @@
- import 'package:flutter/material.dart';
+ import 'dart:convert';
 
+import 'package:digitalsignage/Utils/shared_preferences.dart';
+import 'package:digitalsignage/Utils/urls.dart';
+import 'package:digitalsignage/videoList.dart';
+import 'package:flutter/material.dart';
+ import 'package:http/http.dart';
 
 class home_page extends StatefulWidget {
   const home_page({Key? key}) : super(key: key);
@@ -9,10 +14,23 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
+List<VideoList> video_lists = [];
+bool isLoading =true;
+String user_id="";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLoading ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: Colors.green,),
+            SizedBox(height: 10,),
+            Text("Loading...",style:TextStyle(fontSize: 14,fontWeight: FontWeight.bold, color: Colors.green))
+          ],
+        ),
+      ) :SingleChildScrollView(
         child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
@@ -84,6 +102,35 @@ class _home_pageState extends State<home_page> {
     int a = MediaQuery.of(context).size.width ~/ 260;
     print(a.toString());
     return a;
+  }
+
+
+  @override
+  void initState() {
+    readSharedPreferences(USERID, "").then((value) {
+      user_id = value;
+      getAllVideos();
+    });
+    super.initState();
+  }
+
+  getAllVideos() async {
+    var url = Uri.parse(get_all_video);
+    Map<String, String> headers = {"Connection": "keep_alive"};
+    Map<String, String> body = {"user_id": user_id};
+    Response response = await post(url, body: body, headers: headers);
+    String myData = response.body;
+    var jsonData=jsonDecode(myData);
+    if(jsonData["status"]=="success") {
+      jsonData['video_list'].forEach((jsonResponse) {
+        VideoList obj = new VideoList.fromJson(jsonResponse);
+        video_lists.add(obj);
+      });
+    }
+
+    setState(() {
+      isLoading=false;
+    });
   }
 
 }

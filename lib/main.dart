@@ -1,6 +1,7 @@
 import 'package:digitalsignage/login.dart';
 import 'package:flutter/material.dart';
 
+import 'Utils/urls.dart';
 import 'home_page.dart';
 
 void main() {
@@ -27,9 +28,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const home_page(),
+      home: Login(),
       debugShowCheckedModeBanner: false,
     );
   }
+
 }
 

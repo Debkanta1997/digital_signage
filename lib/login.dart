@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'package:digitalsignage/Utils/shared_preferences.dart';
+import 'package:digitalsignage/home_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'Utils/urls.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -9,6 +15,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isProgress = false;
+  final user_id_controller=TextEditingController();
+  final password_controller=TextEditingController();
+
 
 
   @override
@@ -43,6 +52,7 @@ class _LoginState extends State<Login> {
                   child: Text("Enter User ID",style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
                 ),
                 TextField(
+                  controller: user_id_controller,
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.0),),
@@ -67,6 +77,7 @@ class _LoginState extends State<Login> {
                   child: Text("Enter Password",style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white)),
                 ),
                 TextField(
+                  controller: password_controller,
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1.0),),
@@ -84,7 +95,12 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 40,),
 
 
-                ElevatedButton(onPressed: (){},
+                ElevatedButton(onPressed: (){
+                  setState(() {
+                    isProgress = true;
+                  });
+                  userLogin();
+                },
                     style: ElevatedButton.styleFrom(
                         primary: isProgress ? Color(0Xff696969).withOpacity(0.5) : Color(0Xff696969)
                     ),
@@ -104,4 +120,48 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+
+  @override
+  void initState() {
+    readSharedPreferences(ISLOGIN, "0").then((value) {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>home_page()), (Route<dynamic> route) => false);
+
+    });
+    super.initState();
+  }
+
+  userLogin() async {
+    var url = Uri.parse(login);
+    Map<String, String> headers = {"Connection": "keep_alive"};
+    Map<String, String> body = {"user_id": user_id_controller.text.toString().trim(),"password":password_controller.text.toString().trim()};
+    Response response = await post(url, headers: headers, body: body);
+    String myData = response.body;
+    if(response.statusCode==200){
+      var jsonData=jsonDecode(myData);
+      if(jsonData["status"]=="success"){
+        writeSharedPreferences(ISLOGIN, "1");
+        writeSharedPreferences(USERID, jsonData["user_id"]);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>home_page()), (Route<dynamic> route) => false);
+        Fluttertoast.showToast(
+            msg: "Login Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }else{
+        Fluttertoast.showToast(
+            msg: "Wrong user id or password!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+    }
+  }
+
 }
