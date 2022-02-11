@@ -125,8 +125,11 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     readSharedPreferences(ISLOGIN, "0").then((value) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>home_page()), (Route<dynamic> route) => false);
-
+      if(value == "1") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => home_page()), (
+            Route<dynamic> route) => false);
+      }
     });
     super.initState();
   }
