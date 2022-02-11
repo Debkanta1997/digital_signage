@@ -40,7 +40,7 @@ String user_id="";
          shrinkWrap: true,
          physics: NeverScrollableScrollPhysics(),
          padding: EdgeInsets.zero,
-         itemCount: 5,
+         itemCount: video_lists.length,
          itemBuilder: (BuildContext context, int index) {
            return Wrap(
              direction: Axis.vertical,
@@ -98,11 +98,7 @@ String user_id="";
     );
   }
 
-  int rowNumber(){
-    int a = MediaQuery.of(context).size.width ~/ 260;
-    print(a.toString());
-    return a;
-  }
+
 
 
   @override
