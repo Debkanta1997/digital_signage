@@ -36,74 +36,7 @@ late VideoPlayerController _controller;
           ],
         ),
       ) :SingleChildScrollView(
-        child:
-        // GridView.count(
-        //     shrinkWrap: true,
-        //     physics: ClampingScrollPhysics(),
-        //     // Create a grid with 2 columns. If you change the scrollDirection to
-        //     // horizontal, this produces 2 rows.
-        //     padding: EdgeInsets.symmetric(horizontal: 5),
-        //     crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
-        //     crossAxisSpacing: 10,
-        //     children:  List.generate(video_lists.length, (index) {
-        //       _controller = new VideoPlayerController.network(video_lists[index].signageUrl.toString(),
-        //       );
-        //       _controller.addListener(() {
-        //       });
-        //       _controller.setLooping(false);
-        //       _controller.initialize();
-        //       return Padding(
-        //         padding: const EdgeInsets.only(
-        //           top: 10,
-        //         ),
-        //         child: Card(
-        //           elevation: 5,
-        //           shadowColor: Colors.black87,
-        //           child: Container(
-        //             padding: EdgeInsets.all(10),
-        //             height: 250,
-        //             width: 250,
-        //             decoration: BoxDecoration(
-        //               borderRadius: BorderRadius.circular(5),
-        //             ),
-        //             child: Column(
-        //               mainAxisAlignment: MainAxisAlignment.start,
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               children: [
-        //                 Expanded(
-        //                   child: Container(
-        //                     color: Colors.white,
-        //                     child: VideoPlayer(_controller),
-        //                   ),
-        //                 ),
-        //                 Padding(
-        //                   padding: const EdgeInsets.only(top: 10),
-        //                   child: Row(
-        //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                     crossAxisAlignment: CrossAxisAlignment.end,
-        //                     children: [
-        //                       ElevatedButton(
-        //                           onPressed: () async {
-        //                             var picked = await FilePicker.platform.pickFiles();
-        //                             if (picked != null) {
-        //                               print(picked.files.first.name);
-        //                               objFile = picked.files.single;
-        //                             }
-        //                           },
-        //                           child: Text('Change')),
-        //                       ElevatedButton(
-        //                           onPressed: () {}, child: Text('Delete'))
-        //                     ],
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //       );
-        //     })),
-
-        GridView.builder(
+        child:GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
               crossAxisSpacing: 10,
@@ -120,6 +53,7 @@ late VideoPlayerController _controller;
                    });
                    _controller.setLooping(false);
                    _controller.initialize();
+
            return Wrap(
              direction: Axis.vertical,
              spacing: 10.0,
@@ -151,21 +85,20 @@ late VideoPlayerController _controller;
                                    Center(
                                      child: InkWell(
                                        onTap: () {
-                                         // Wrap the play or pause in a call to `setState`. This ensures the
-                                         // correct icon is shown.
-                                         setState(() {
-                                           // If the video is playing, pause it.
+                                         //setState(() {
                                            if (_controller.value.isPlaying) {
                                              _controller.pause();
+                                             video_lists[index].isPlaying=false;
                                            } else {
-                                             // If the video is paused, play it.
                                              _controller.play();
+                                             video_lists[index].isPlaying=true;
                                            }
-                                         });
+                                        // });
+
                                        },
                                        // Display the correct icon depending on the state of the player.
                                        child: Icon(
-                                         _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                         video_lists[index].isPlaying==true ? Icons.pause : Icons.play_arrow,
                                          color: Colors.blue,
                                        ),
                                      )
@@ -220,7 +153,8 @@ late VideoPlayerController _controller;
     Response response = await post(url, body: body, headers: headers);
     String myData = response.body;
     var jsonData=jsonDecode(myData);
-    if(jsonData["status"]=="video found") {
+    if(jsonData["status"]=="video found"
+        "") {
       jsonData['video_list'].forEach((jsonResponse) {
         VideoList obj = new VideoList.fromJson(jsonResponse);
         video_lists.add(obj);
