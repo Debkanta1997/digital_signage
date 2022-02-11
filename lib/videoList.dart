@@ -26,16 +26,19 @@ class videoLists {
 
 class VideoList {
   String? signageUrl;
+  bool? isPlaying;
 
   VideoList({this.signageUrl});
 
   VideoList.fromJson(Map<String, dynamic> json) {
     signageUrl = json['signage_url'];
+    isPlaying = false;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['signage_url'] = this.signageUrl;
+    isPlaying = this.isPlaying;
     return data;
   }
 }

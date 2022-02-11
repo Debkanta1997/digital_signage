@@ -37,136 +37,168 @@ late VideoPlayerController _controller;
         ),
       ) :SingleChildScrollView(
         child:
-        GridView.count(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            // Create a grid with 2 columns. If you change the scrollDirection to
-            // horizontal, this produces 2 rows.
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
-            crossAxisSpacing: 10,
-            children:  List.generate(video_lists.length, (index) {
-              _controller = VideoPlayerController.network(video_lists[index].signageUrl.toString(),
-              );
-              _controller.addListener(() {
-                setState(() {});
-              });
-              _controller.setLooping(false);
-              _controller.initialize();
-              return Padding(
-                padding: const EdgeInsets.only(
-                  top: 10,
-                ),
-                child: Card(
-                  elevation: 5,
-                  shadowColor: Colors.black87,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    height: 250,
-                    width: 250,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            color: Colors.white,
-                            child: VideoPlayer(_controller),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    var picked = await FilePicker.platform.pickFiles();
-                                    if (picked != null) {
-                                      print(picked.files.first.name);
-                                      objFile = picked.files.single;
-                                    }
-                                  },
-                                  child: Text('Change')),
-                              ElevatedButton(
-                                  onPressed: () {}, child: Text('Delete'))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            })),
+        // GridView.count(
+        //     shrinkWrap: true,
+        //     physics: ClampingScrollPhysics(),
+        //     // Create a grid with 2 columns. If you change the scrollDirection to
+        //     // horizontal, this produces 2 rows.
+        //     padding: EdgeInsets.symmetric(horizontal: 5),
+        //     crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
+        //     crossAxisSpacing: 10,
+        //     children:  List.generate(video_lists.length, (index) {
+        //       _controller = new VideoPlayerController.network(video_lists[index].signageUrl.toString(),
+        //       );
+        //       _controller.addListener(() {
+        //       });
+        //       _controller.setLooping(false);
+        //       _controller.initialize();
+        //       return Padding(
+        //         padding: const EdgeInsets.only(
+        //           top: 10,
+        //         ),
+        //         child: Card(
+        //           elevation: 5,
+        //           shadowColor: Colors.black87,
+        //           child: Container(
+        //             padding: EdgeInsets.all(10),
+        //             height: 250,
+        //             width: 250,
+        //             decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(5),
+        //             ),
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.start,
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: [
+        //                 Expanded(
+        //                   child: Container(
+        //                     color: Colors.white,
+        //                     child: VideoPlayer(_controller),
+        //                   ),
+        //                 ),
+        //                 Padding(
+        //                   padding: const EdgeInsets.only(top: 10),
+        //                   child: Row(
+        //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //                     crossAxisAlignment: CrossAxisAlignment.end,
+        //                     children: [
+        //                       ElevatedButton(
+        //                           onPressed: () async {
+        //                             var picked = await FilePicker.platform.pickFiles();
+        //                             if (picked != null) {
+        //                               print(picked.files.first.name);
+        //                               objFile = picked.files.single;
+        //                             }
+        //                           },
+        //                           child: Text('Change')),
+        //                       ElevatedButton(
+        //                           onPressed: () {}, child: Text('Delete'))
+        //                     ],
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         ),
+        //       );
+        //     })),
 
-        // GridView.builder(
-        //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //       crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
-        //       crossAxisSpacing: 10,
-        //     ),
-        //     scrollDirection: Axis.vertical,
-        //  shrinkWrap: true,
-        //  physics: NeverScrollableScrollPhysics(),
-        //  padding: EdgeInsets.zero,
-        //  itemCount: 5,
-        //  itemBuilder: (BuildContext context, int index) {
-        //    return Wrap(
-        //      direction: Axis.vertical,
-        //      spacing: 10.0,
-        //      runSpacing: 20.0,
-        //      children: [
-        //        Padding(
-        //          padding: const EdgeInsets.only(top: 10,),
-        //          child: Card(
-        //            elevation: 5, shadowColor: Colors.black87,
-        //            child: Container(
-        //              padding: EdgeInsets.all(10),
-        //              height: 250,
-        //              width: 250,
-        //              decoration: BoxDecoration(
-        //                color: Colors.red,
-        //                borderRadius: BorderRadius.circular(5),
-        //              ),
-        //              child: Column(
-        //                mainAxisAlignment: MainAxisAlignment.start,
-        //                crossAxisAlignment: CrossAxisAlignment.start,
-        //                children: [
-        //                  Expanded(
-        //                    child: Container(
-        //                      color: Colors.white,
-        //                    ),
-        //                  ),
-        //                  Padding(
-        //                    padding: const EdgeInsets.only(top: 10),
-        //                    child: Row(
-        //                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                      crossAxisAlignment: CrossAxisAlignment.end,
-        //                      children: [
-        //                        ElevatedButton(
-        //                            onPressed: () {},
-        //                            child: Text('Change')
-        //                        ),
-        //                        ElevatedButton(
-        //                            onPressed: () {},
-        //                            child: Text('Delete')
-        //                        )
-        //                      ],
-        //                    ),
-        //                  ),
-        //                ],
-        //              ),
-        //            ),
-        //          ),
-        //        ),
-        //      ],
-        //    );
-        //  }
-        // ),
+        GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: MediaQuery.of(context).size.width ~/ 260,
+              crossAxisSpacing: 10,
+            ),
+            scrollDirection: Axis.vertical,
+         shrinkWrap: true,
+         physics: NeverScrollableScrollPhysics(),
+         padding: EdgeInsets.zero,
+         itemCount: video_lists.length,
+         itemBuilder: (BuildContext context, int index) {
+           _controller = new VideoPlayerController.network(video_lists[index].signageUrl.toString(),
+                   );
+                   _controller.addListener(() {
+                   });
+                   _controller.setLooping(false);
+                   _controller.initialize();
+           return Wrap(
+             direction: Axis.vertical,
+             spacing: 10.0,
+             runSpacing: 20.0,
+             children: [
+               Padding(
+                 padding: const EdgeInsets.only(top: 10,),
+                 child: Card(
+                   elevation: 5, shadowColor: Colors.black87,
+                   child: Container(
+                     padding: EdgeInsets.all(10),
+                     height: 200,
+                     width: 250,
+                     decoration: BoxDecoration(
+                       color: Colors.grey.shade400,
+                       borderRadius: BorderRadius.circular(5),
+                     ),
+                     child: Column(
+                       mainAxisAlignment: MainAxisAlignment.start,
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         Expanded(
+                           child: Container(
+                             color: Colors.white,
+                             child: Stack(
+                                 children: [
+
+                                   VideoPlayer(_controller),
+                                   Center(
+                                     child: InkWell(
+                                       onTap: () {
+                                         // Wrap the play or pause in a call to `setState`. This ensures the
+                                         // correct icon is shown.
+                                         setState(() {
+                                           // If the video is playing, pause it.
+                                           if (_controller.value.isPlaying) {
+                                             _controller.pause();
+                                           } else {
+                                             // If the video is paused, play it.
+                                             _controller.play();
+                                           }
+                                         });
+                                       },
+                                       // Display the correct icon depending on the state of the player.
+                                       child: Icon(
+                                         _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                         color: Colors.blue,
+                                       ),
+                                     )
+                                   ),
+                                 ]),
+                           ),
+                         ),
+                         Padding(
+                           padding: const EdgeInsets.only(top: 10),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                             crossAxisAlignment: CrossAxisAlignment.end,
+                             children: [
+                               ElevatedButton(
+                                   onPressed: () {},
+                                   child: Text('Change')
+                               ),
+                               ElevatedButton(
+                                   onPressed: () {},
+                                   child: Text('Delete')
+                               )
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
+                   ),
+                 ),
+               ),
+             ],
+           );
+         }
+        ),
       ),
     );
   }
